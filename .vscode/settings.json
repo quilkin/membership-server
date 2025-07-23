@@ -1,0 +1,8 @@
+{
+  "git.openRepositoryInParentFolders": "never"
+ //   "files.exclude": {
+ //   "**/*.js": { "when": "$(basename).ts" },
+  //  "**/**.js": { "when": "$(basename).tsx" }
+//}
+
+}
