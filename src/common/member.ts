@@ -15,7 +15,7 @@ export class Member {
     address2= '';
     address3 = '';
     postcode = '';
-    telephone = '';
+    phone = '';
     email = '';
     committee = '';
     commArray = [''];
@@ -23,5 +23,7 @@ export class Member {
     waChat = 0;
     waInfo = 0;
     waLeisure = 0;
+    nextOfKin = '';
+    nokPhone = '';
 
 }

@@ -9,8 +9,8 @@ import * as dotenv from "dotenv";
 //import http from 'http';
 
 import { logIn, getLogins, findUser, register, changeAccount, forgotPW, signUp } from "./src/logins.js";
-import { getMembers, saveMember, editMember, deleteMember } from "./src/members.js";
-import { createLogFiles, logError, logUser, logAction } from './src/utils/logger.js';
+import { getMembers, saveMember, editMember, deleteMember, payment, findMember } from "./src/members.js";
+import { createLogFiles, logError, logUser } from './src/utils/logger.js';
 import { apiMethods } from './src/common/apiMethods.js';
 import { createPool } from './src/dbconn.js'  ;
 
@@ -40,11 +40,11 @@ app.get('/', function (req, res) {
 //   res.sendFile('./logs/rh_action.log',  { root: './' })
 // })
 app.get('/errors', function (req, res) {
-  res.sendFile('./logs/rh_error.log',  { root: './' })
+  res.sendFile('./logs/members_error.log',  { root: './' })
 })
-// app.get('/users', function (req, res) {
-//   res.sendFile('./logs/rh_users.log',  { root: './' })
-// })
+app.get('/users', function (req, res) {
+  res.sendFile('./logs/members_users.log',  { root: './' })
+})
 app.get('/test', function (req, res) {
     res.send('membership server running!');
     logError('membership  server running!');
@@ -52,11 +52,13 @@ app.get('/test', function (req, res) {
 
 
 
-  // rides 
+  // members
   app.post("/" + apiMethods.getMembers,     getMembers)
   app.post("/" + apiMethods.saveMember,     saveMember)
   app.post("/" + apiMethods.editMember,     editMember)
   app.post("/" + apiMethods.deleteMember,   deleteMember)
+  app.post("/" + apiMethods.findMember,   findMember)
+  app.post("/" + apiMethods.payment,   payment)
  
   // logins
   app.post("/" + apiMethods.login,        logIn)
@@ -66,7 +68,7 @@ app.get('/test', function (req, res) {
   app.post("/" + apiMethods.register,     register)
   app.post("/" + apiMethods.changeAccount,changeAccount)
   app.post("/" + apiMethods.forgotPW,     forgotPW)
-  app.post("/" + apiMethods.logAction,    logAction)
+
   
   const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     let message = err.message.toString();

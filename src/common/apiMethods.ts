@@ -12,12 +12,14 @@ export enum apiMethods {
     getMembers = 'getMembers',  
     saveMember = 'SaveMember',
     editMember = 'EditMember',
+    findMember = 'FindMember',
     deleteMember = 'DeleteMember',
     getLogins = 'GetLogins',
     register = 'Register',
     checkTimeout = 'CheckTimeout',
     findUser = 'FindUser',
-    logAction = 'LogAction'
+    logAction = 'LogAction',
+    payment = 'Payment'
     
   }
   
