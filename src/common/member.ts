@@ -6,7 +6,7 @@ import  { TimesDates }  from './timesdates'
 export class Member {
     number = 0;             // will be autoincrented by the database
     fname = '';
-    name = '';
+    surname = '';
     subs = 0.0;
     paidDate = new Date();
     joinedDate = new Date();

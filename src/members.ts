@@ -2,16 +2,18 @@ import { dbconnection } from './dbconn.js'  ;
 import { Member } from './common/member.js'
 import {  logUser } from './utils/logger.js';
 import { TimesDates } from './common/timesdates.js';
+import { User} from './common/user.js';
 
 function ModifyApostrophes(data : string): string
 {
     return data.replace("'", "''");
 }
 
-export function getMembers(request: { body: { data: number; }; }, response: { json: (arg0: Member[] ) => void; }, next: (arg0: { code: any; }) => void ) {
+export function getMembers(request: { body: { data: string; }; }, response: { json: (arg0: Member[] ) => void; }, next: (arg0: { code: any; }) => void ) {
 
+  const orderBy = request.body.data;
 
-  const sql = `SELECT * FROM members order by name asc`;
+  const sql = `SELECT * FROM members order by ${orderBy} asc`;
 
 
   dbconnection.query(sql,function (error: { code: any; }, results: Member[])
@@ -44,6 +46,26 @@ export function findMember(request: { body: { data: String; }; }, response: { js
   });
 }
 
+// fins login name on Ridehub
+export function findLoginName(request: { body: { data: String; }; }, response: { json: (arg0: User[]) => void; }, next: (arg0: { code: any; }) => void) {
+
+  const memberEmail = request.body.data;
+  const sql = `SELECT * from logins inner join members on lower(logins.email) = lower(members.email) where members.email = '${memberEmail}'`
+  dbconnection.query(sql,function (error: { code: any; }, results: User[])
+  {
+      if (error != null) {
+        next(error);
+        return;
+      }
+      // if (results.length > 0) {
+      //   response.json("error: there is more than one member with this email.");
+      //   return;
+      // }
+      response.json(results);
+  });
+}
+
+
 export function saveMember(request: { body: { data: Member; }; }, response: { json: (arg0: string) => void; }, next: (arg0: { code: any; }) => void) {
     const member = request.body.data;
     member.address1 = ModifyApostrophes(member.address1);
@@ -51,7 +73,7 @@ export function saveMember(request: { body: { data: Member; }; }, response: { js
     member.address3 = ModifyApostrophes(member.address3);
 
         // check for existing member
-    let sql = `SELECT fname,name FROM members where name= '${member.name}' and fname = '${member.fname}'`
+    let sql = `SELECT fname,name FROM members where name= '${member.surname}' and fname = '${member.fname}'`
     dbconnection.query(sql,function (error: { code: any; }, results: string[])
     {
       if (error != null) {
@@ -65,7 +87,7 @@ export function saveMember(request: { body: { data: Member; }; }, response: { js
       //const today = new Date();
       //const todayStr = TimesDates.dateString(today);
       sql = `insert into members (fname,name,gender,subs,phone,email,committee,address1,address2,address3,postcode,paidDate,joinedDate,waChat,waInfo,waLeisure,nextOfKin,nokPhone)`;
-      sql += ` values ('${member.fname}','${member.name}','${member.gender}','${member.subs}','${member.phone}','${member.email}','${member.committee}','${member.address1}',`;
+      sql += ` values ('${member.fname}','${member.surname}','${member.gender}','${member.subs}','${member.phone}','${member.email}','${member.committee}','${member.address1}',`;
       sql += `'${member.address2}','${member.address3}','${member.postcode}','${member.paidDate}','${member.joinedDate}','${member.waChat}','${member.waInfo}','${member.waLeisure}''${member.nextOfKin}','${member.nokPhone}')`;
    
       // get new member ID
@@ -77,7 +99,7 @@ export function saveMember(request: { body: { data: Member; }; }, response: { js
           return;
         }
         member.number = results.insertId;
-        logUser(`Member ${member.number} saved as ${member.fname} ${member.name} `);
+        logUser(`Member ${member.number} saved as ${member.fname} ${member.surname} `);
         response.json(member.number.toString());
       })
     });
@@ -89,7 +111,7 @@ export function saveMember(request: { body: { data: Member; }; }, response: { js
     member.address2 = ModifyApostrophes(member.address2);
     member.address3 = ModifyApostrophes(member.address3);
     
-    let sql = `update members set fname = '${member.fname}', name = '${member.name}',waChat= '${member.waChat}',waInfo = '${member.waInfo}',waLeisure = '${member.waLeisure}',`;
+    let sql = `update members set fname = '${member.fname}', name = '${member.surname}',waChat= '${member.waChat}',waInfo = '${member.waInfo}',waLeisure = '${member.waLeisure}',`;
     sql += ` address1 = '${member.address1}', address2 = '${member.address2}',address3 = '${member.address3}', postcode = '${member.postcode}', paidDate = '${member.paidDate}',`;
     sql += ` subs= '${member.subs}', phone='${member.phone}', email = '${member.email}', committee = '${member.committee}',  nextOfKin = '${member.nextOfKin}', nokPhone = '${member.nokPhone}'`;
     sql += `where  number = '${member.number}'`;
@@ -100,7 +122,7 @@ export function saveMember(request: { body: { data: Member; }; }, response: { js
         next(error);
         return;
       }
-      logUser(`Member ${member.number} edited as ${member.fname} ${member.name} `);
+      logUser(`Member ${member.number} edited as ${member.fname} ${member.surname} `);
       response.json('OK');
     })
   }
@@ -114,7 +136,7 @@ export function saveMember(request: { body: { data: Member; }; }, response: { js
           next(error);
           return;
         }
-        logUser(`Member ${member.fname} ${member.name}  updated payment date `);
+        logUser(`Member ${member.fname} ${member.surname}  updated payment date `);
         response.json('OK');
       })
       
@@ -131,7 +153,7 @@ export function saveMember(request: { body: { data: Member; }; }, response: { js
         next(error);
         return;
       }
-      logUser(`Member  ${member.fname} ${member.name} deleted`);
+      logUser(`Member  ${member.fname} ${member.surname} deleted`);
       response.json('OK');
     });
   }

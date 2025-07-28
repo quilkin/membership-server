@@ -13,6 +13,7 @@ export enum apiMethods {
     saveMember = 'SaveMember',
     editMember = 'EditMember',
     findMember = 'FindMember',
+    findLoginName = 'FindLogin',
     deleteMember = 'DeleteMember',
     getLogins = 'GetLogins',
     register = 'Register',

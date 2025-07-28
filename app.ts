@@ -9,7 +9,7 @@ import * as dotenv from "dotenv";
 //import http from 'http';
 
 import { logIn, getLogins, findUser, register, changeAccount, forgotPW, signUp } from "./src/logins.js";
-import { getMembers, saveMember, editMember, deleteMember, payment, findMember } from "./src/members.js";
+import { getMembers, saveMember, editMember, deleteMember, payment, findMember, findLoginName } from "./src/members.js";
 import { createLogFiles, logError, logUser } from './src/utils/logger.js';
 import { apiMethods } from './src/common/apiMethods.js';
 import { createPool } from './src/dbconn.js'  ;
@@ -58,6 +58,7 @@ app.get('/test', function (req, res) {
   app.post("/" + apiMethods.editMember,     editMember)
   app.post("/" + apiMethods.deleteMember,   deleteMember)
   app.post("/" + apiMethods.findMember,   findMember)
+  app.post("/" + apiMethods.findLoginName,   findLoginName)
   app.post("/" + apiMethods.payment,   payment)
  
   // logins
