@@ -1,5 +1,5 @@
 {
-  "name": "ridehub-server",
+  "name": "membership-server",
   "version": "1.0.0",
   "description": "learning",
   "main": "dist\\app.js",
