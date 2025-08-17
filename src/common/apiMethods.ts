@@ -7,8 +7,8 @@ export enum apiMethods {
 
     signup = 'Signup',
     login = 'Login',
-    changeAccount = 'ChangeAccount',
-    forgotPW ='ForgetPassword',
+    //changeAccount = 'ChangeAccount',
+    //forgotPW ='ForgetPassword',
     getMembers = 'getMembers',  
     saveMember = 'SaveMember',
     editMember = 'EditMember',
@@ -16,8 +16,8 @@ export enum apiMethods {
     findLoginName = 'FindLogin',
     deleteMember = 'DeleteMember',
     getLogins = 'GetLogins',
-    register = 'Register',
-    checkTimeout = 'CheckTimeout',
+    memberList = 'SendMembershipList',
+    //checkTimeout = 'CheckTimeout',
     findUser = 'FindUser',
     logAction = 'LogAction',
     payment = 'Payment'

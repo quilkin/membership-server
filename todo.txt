@@ -1,5 +1,0 @@
-improve log files - daily / weekly?
-errors : get first 2 lines of stack
-multi-segment tracks
-
-change type of 'next' so that error can be redefined, rather than thrown

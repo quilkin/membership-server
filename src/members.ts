@@ -46,7 +46,7 @@ export function findMember(request: { body: { data: String; }; }, response: { js
   });
 }
 
-// fins login name on Ridehub
+// find login name on Ridehub
 export function findLoginName(request: { body: { data: String; }; }, response: { json: (arg0: User[]) => void; }, next: (arg0: { code: any; }) => void) {
 
   const memberEmail = request.body.data;
@@ -112,7 +112,7 @@ export function saveMember(request: { body: { data: Member; }; }, response: { js
     member.address3 = ModifyApostrophes(member.address3);
     
     let sql = `update members set fname = '${member.fname}', surname = '${member.surname}',waChat= '${member.waChat}',waInfo = '${member.waInfo}',waLeisure = '${member.waLeisure}',`;
-    sql += ` address1 = '${member.address1}', address2 = '${member.address2}',address3 = '${member.address3}', postcode = '${member.postcode}', paidDate = '${member.paidDate}',`;
+    sql += ` address1 = '${member.address1}', address2 = '${member.address2}',address3 = '${member.address3}', postcode = '${member.postcode}', paidDate = '${member.paidDate}',joinedDate = '${member.joinedDate}',`;
     sql += ` subs= '${member.subs}', phone='${member.phone}', email = '${member.email}', committee = '${member.committee}',  nextOfKin = '${member.nextOfKin}', nokPhone = '${member.nokPhone}'`;
     sql += `where  number = '${member.number}'`;
 

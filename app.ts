@@ -8,11 +8,13 @@ import type { ErrorRequestHandler } from "express";
 import * as dotenv from "dotenv";
 //import http from 'http';
 
-import { logIn, getLogins, findUser, register, changeAccount, forgotPW, signUp } from "./src/logins.js";
+import { logIn, getLogins } from "./src/logins.js";
+//import { logIn, getLogins, findUser, register, changeAccount, forgotPW, signUp } from "./src/logins.js";//
 import { getMembers, saveMember, editMember, deleteMember, payment, findMember, findLoginName } from "./src/members.js";
 import { createLogFiles, logError, logUser } from './src/utils/logger.js';
 import { apiMethods } from './src/common/apiMethods.js';
 import { createPool } from './src/dbconn.js'  ;
+import { sendMembershipList } from "./src/email.js";
 
 const app = express ();
 //const httpServer = new http.Server(app);
@@ -63,12 +65,12 @@ app.get('/test', function (req, res) {
  
   // logins
   app.post("/" + apiMethods.login,        logIn)
-  app.post("/" + apiMethods.signup,       signUp)
   app.post("/" + apiMethods.getLogins,    getLogins)
-  app.post("/" + apiMethods.findUser,     findUser)
-  app.post("/" + apiMethods.register,     register)
-  app.post("/" + apiMethods.changeAccount,changeAccount)
-  app.post("/" + apiMethods.forgotPW,     forgotPW)
+  app.post("/" + apiMethods.memberList,       sendMembershipList)
+  // app.post("/" + apiMethods.findUser,     findUser)
+  // app.post("/" + apiMethods.register,     register)
+  // app.post("/" + apiMethods.changeAccount,changeAccount)
+  // app.post("/" + apiMethods.forgotPW,     forgotPW)
 
   
   const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
@@ -90,5 +92,5 @@ app.get('/test', function (req, res) {
   createLogFiles('./');
   createPool('./.env');
   dotenv.config({ path: './.env' });
-  logError("Memnership server listening on PORT: "  + port);
+  logError("Membership server listening on PORT: "  + port);
   //logError("Environment: "  + process.env.NODE_ENV);
