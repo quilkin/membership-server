@@ -1,6 +1,6 @@
 import { dbconnection } from './dbconn.js'  ;
 import { Member } from './common/member.js'
-import {  logUser } from './utils/logger.js';
+import {  logError, logUser } from './utils/logger.js';
 import { TimesDates } from './common/timesdates.js';
 import { User} from './common/user.js';
 
@@ -46,6 +46,20 @@ export function findMember(request: { body: { data: String; }; }, response: { js
   });
 }
 
+// // find all committee members who should receive an automated list every month
+// export function findMemberListControllers() : Member[] | null{
+//   const sql = `SELECT * from members where committee like '%memberlist%'`;
+//   dbconnection.query(sql,function (error: { code: any; }, results: Member[])
+//   {
+//     if (error != null) 
+//       logError(error.code);
+//     else 
+//       return results;
+//   });
+
+//   return null;
+// }
+
 // find login name on Ridehub
 export function findLoginName(request: { body: { data: String; }; }, response: { json: (arg0: User[]) => void; }, next: (arg0: { code: any; }) => void) {
 
@@ -73,7 +87,7 @@ export function saveMember(request: { body: { data: Member; }; }, response: { js
     member.address3 = ModifyApostrophes(member.address3);
 
         // check for existing member
-    let sql = `SELECT fname,surname FROM members where name= '${member.surname}' and fname = '${member.fname}'`
+    let sql = `SELECT fname,surname FROM members where surname= '${member.surname}' and fname = '${member.fname}'`
     dbconnection.query(sql,function (error: { code: any; }, results: string[])
     {
       if (error != null) {
@@ -86,9 +100,10 @@ export function saveMember(request: { body: { data: Member; }; }, response: { js
       }
       //const today = new Date();
       //const todayStr = TimesDates.dateString(today);
-      sql = `insert into members (fname,surname,gender,subs,phone,email,committee,address1,address2,address3,postcode,paidDate,joinedDate,waChat,waInfo,waLeisure,nextOfKin,nokPhone)`;
+      sql = `insert into members (fname,surname,gender,subs,phone,email,committee,address1,`;
+      sql += `address2,address3,postcode,paidDate,joinedDate,waChat,waInfo,waLeisure,nextOfKin,nokPhone)`;
       sql += ` values ('${member.fname}','${member.surname}','${member.gender}','${member.subs}','${member.phone}','${member.email}','${member.committee}','${member.address1}',`;
-      sql += `'${member.address2}','${member.address3}','${member.postcode}','${member.paidDate}','${member.joinedDate}','${member.waChat}','${member.waInfo}','${member.waLeisure}''${member.nextOfKin}','${member.nokPhone}')`;
+      sql += `'${member.address2}','${member.address3}','${member.postcode}','${member.paidDate}','${member.joinedDate}','${member.waChat}','${member.waInfo}','${member.waLeisure}','${member.nextOfKin}','${member.nokPhone}')`;
    
       // get new member ID
 

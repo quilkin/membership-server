@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import methodOverride from "method-override";
 import cors from "cors";
+import schedule from "node-schedule"
 import type { ErrorRequestHandler } from "express";
 //import path from 'path';
 //import { fileURLToPath } from 'url';
@@ -14,7 +15,8 @@ import { getMembers, saveMember, editMember, deleteMember, payment, findMember, 
 import { createLogFiles, logError, logUser } from './src/utils/logger.js';
 import { apiMethods } from './src/common/apiMethods.js';
 import { createPool } from './src/dbconn.js'  ;
-import { sendMembershipList } from "./src/email.js";
+//import { requestMembershipList } from "./src/email.js";
+import { autoMembershipList } from "./src/email.js";
 
 const app = express ();
 //const httpServer = new http.Server(app);
@@ -66,7 +68,7 @@ app.get('/test', function (req, res) {
   // logins
   app.post("/" + apiMethods.login,        logIn)
   app.post("/" + apiMethods.getLogins,    getLogins)
-  app.post("/" + apiMethods.memberList,       sendMembershipList)
+  //app.post("/" + apiMethods.memberList,       requestMembershipList)
   // app.post("/" + apiMethods.findUser,     findUser)
   // app.post("/" + apiMethods.register,     register)
   // app.post("/" + apiMethods.changeAccount,changeAccount)
@@ -93,4 +95,6 @@ app.get('/test', function (req, res) {
   createPool('./.env');
   dotenv.config({ path: './.env' });
   logError("Membership server listening on PORT: "  + port);
-  //logError("Environment: "  + process.env.NODE_ENV);
+  schedule.scheduleJob('0 * * * * *',autoMembershipList) ;
+
+  
