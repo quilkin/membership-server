@@ -2,7 +2,8 @@ import express from "express";
 import bodyParser from "body-parser";
 import methodOverride from "method-override";
 import cors from "cors";
-import schedule from "node-schedule"
+//import schedule from "node-schedule"
+import cron from 'node-cron'
 import type { ErrorRequestHandler } from "express";
 //import path from 'path';
 //import { fileURLToPath } from 'url';
@@ -53,6 +54,12 @@ app.get('/test', function (req, res) {
     res.send('membership server running!');
     logError('membership  server running!');
 })
+app.get('/schedule', function(req, res) {
+ 
+  res.send('schedule running!');
+  logUser('schedule running!');
+   autoMembershipList();
+})
 
 
 
@@ -95,6 +102,11 @@ app.get('/test', function (req, res) {
   createPool('./.env');
   dotenv.config({ path: './.env' });
   logError("Membership server listening on PORT: "  + port);
-  schedule.scheduleJob('0 * * * * *',autoMembershipList) ;
+  // send member list once a month (on the 14th in this case)
+  //cron.schedule('0 0 0 14 * *',autoMembershipList) ;
 
   
+// cron.schedule('27 * * * *', () => {
+//   console.log('running a task every 27th minute');
+//   logUser('running a task every 27th  minute');
+// });

@@ -85,6 +85,7 @@ export function saveMember(request: { body: { data: Member; }; }, response: { js
     member.address1 = ModifyApostrophes(member.address1);
     member.address2 = ModifyApostrophes(member.address2);
     member.address3 = ModifyApostrophes(member.address3);
+    member.surname = ModifyApostrophes(member.surname);
 
         // check for existing member
     let sql = `SELECT fname,surname FROM members where surname= '${member.surname}' and fname = '${member.fname}'`
@@ -125,6 +126,7 @@ export function saveMember(request: { body: { data: Member; }; }, response: { js
     member.address1 = ModifyApostrophes(member.address1);
     member.address2 = ModifyApostrophes(member.address2);
     member.address3 = ModifyApostrophes(member.address3);
+    member.surname = ModifyApostrophes(member.surname);
     
     let sql = `update members set fname = '${member.fname}', surname = '${member.surname}',waChat= '${member.waChat}',waInfo = '${member.waInfo}',waLeisure = '${member.waLeisure}',`;
     sql += ` address1 = '${member.address1}', address2 = '${member.address2}',address3 = '${member.address3}', postcode = '${member.postcode}', paidDate = '${member.paidDate}',joinedDate = '${member.joinedDate}',`;

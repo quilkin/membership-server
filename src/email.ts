@@ -142,8 +142,8 @@ function makeCSVfile(members: Member[]) {
                 else if (typeof val === 'object'){
                     if (val != null) {
                         try {
-                            const dateStr = val.toDateString();
-                            values[i] = dateStr.substring(4);   // omit day of week
+                            const dateStr = val.getFullYear()  + "/" + ("0"+(val.getMonth()+1)).slice(-2) + "/" + ("0" + val.getDate()).slice(-2);
+                            values[i] = dateStr;
                         }
                         catch {}
                     }
